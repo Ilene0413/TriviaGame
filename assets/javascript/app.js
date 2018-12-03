@@ -12,6 +12,7 @@ $(document).ready(function () {
     let numCorrect = 0;
     let numIncorrect = 0;
     let showTimer;
+    let maxAnswers = 4;
     let triviaQuestions = [
         {
             question: "Question1",
@@ -50,10 +51,22 @@ $(document).ready(function () {
         for (var i = 0; i < maxQuest; i++) {
             questAsked.push("n");
         }
-        console.log("start game");
-
-        // put up trivia game question with answers and timer
+    //determine if game is over
+        if (questionCount === "maxQuest") {
+            endGame();
+            return;
+        }
+    // put up trivia game question with answers and timer
         triviaGame(questionNum);
+
+    // if timer gets to zero, player loses
+
+        if (showTimer === 0) {
+            youLose();
+            return;
+        }
+
+        //player clicked on an answer
 
 
 
@@ -61,7 +74,6 @@ $(document).ready(function () {
     // this function puts up triva game board
 
     function triviaGame(questionNum) {
-        console.log("in triva game");
         //get random question, mark question asked, keep count # of questions
         //loop until get a question not answered
         let qA = false;
@@ -79,20 +91,45 @@ $(document).ready(function () {
         showTimer = 30;
         setInterval(countDownTimer, 1000);
 
-        // set up trivia game board
+        // set up trivia game board - timer and question
         $("#timer").html("<p> Timer: " + showTimer + "</p>");
-        $("#triviaQ").html("<p>" + triviaQuestions.question[questionNUM] + "</p>");
-        $("#answer1").html("<p>" + triviaQuestions.question[questionNUM].answers[0] + "</p>");
-        $("#answer2").html("<p>" + triviaQuestions.question[questionNUM].answers[1] + "</p>");
-        $("#answer3").html("<p>" + triviaQuestions.question[questionNUM].answers[2] + "</p>");
-        $("#answer4").html("<p>" + triviaQuestions.question[questionNUM].answers[3] + "</p>");
+        console.log(triviaQuestions[questionNum].question);
+        $("#triviaQ").html("<p>" + triviaQuestions[questionNum].question);
+
+        //set up answers
+        for (i=0; i < maxAnswers; i++) {
+            console.log("setting up answers " + i);
+            let ansBtn = $("<p>");
+            ansBtn.addClass("answer-button answer");
+            ansBtn.attr("answer-value", triviaQuestions[questionNum].answers[i]);
+            ansBtn.attr("text", "</p>");
+            console.log("ansBTN = " + ansBtn);
+//    $("#answersQ").append($("<p>") + triviaQuestions[questionNum].answers[i] + "</p>");
+
+    $("#answersQ").append(ansBtn + triviaQuestions[questionNum].answers[i] + "</p>");
+        }
+    //    let ansButton
+    //    $("#answersQ").html(
+    //   "<p>" + triviaQuestions[questionNum].answers[0] + "</p>" +
+   //    "<p>" + triviaQuestions[questionNum].answers[1] + "</p>" +
+    //   "<p>" + triviaQuestions[questionNum].answers[2] + "</p>" +
+    //   "<p>" + triviaQuestions[questionNum].answers[3] + "</p>");
+
+
+
+        
 
     }
-
-    // this function counts down the timer
+// this function counts down the timer
 
     function countDownTimer() {
         showTimer--;
         $("#timer").html("<p> Timer: " + showTimer + "</p>");
     }
 });
+
+//this function is displayed when game is over
+function endGame() {
+
+
+}
