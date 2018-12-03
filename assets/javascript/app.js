@@ -7,37 +7,38 @@ $(document).ready(function () {
     // object of questions with answers and correct picture
     // array to determine if question already answered
 
+    let maxTimer = 3;
     let maxQuest = 4;
     let questionCount = 0;
     let numCorrect = 0;
     let numIncorrect = 0;
-    let showTimer = 3;
+    let showTimer = maxTimer;
     let maxAnswers = 4;
     let triviaQuestions = [
         {
             question: "Question1",
             answers: ["answer1", "answer2", "answer3", "answer4"],
             correctAnswer: "Correct Respond1",
-            image: "image url"
+            image: "image url 1"
 
         },
         {
             question: "Question2",
             answers: ["answer1", "answer2", "answer3", "answer4"],
             correctAnswer: "Correct Respond2",
-            image: "image url"
+            image: "image url 2"
         },
         {
             question: "Question3",
             answers: ["answer1", "answer2", "answer3", "answer4"],
             correctAnswer: "Correct Respond3",
-            image: "image url"
+            image: "image url 3"
         },
         {
             question: "Question4",
             answers: ["answer1", "answer2", "answer3", "answer4"],
             correctAnswer: "Correct Respond4",
-            image: "image url"
+            image: "image url 4"
         }];
     let questAsked = [];
     let questionNum;
@@ -57,9 +58,10 @@ $(document).ready(function () {
             endGame();
             return;
         }
-        else {
-            questionCount++;
-        }
+       
+        // initialize timer and show timer  
+
+        $("#timer").html("<p> Timer: " + showTimer + "</p>");
         setInterval(countDownTimer, 1000);
 
         // put up trivia game question with answers 
@@ -91,7 +93,8 @@ $(document).ready(function () {
     function triviaGame() {
 
         // clear variables
-        $("#timer, #triviaQ, #answersQ, #winOrLose, correctImg")
+        $("#triviaQ, #answersQ, #winOrLose, correctImg").empty();
+
         //get random question, mark question asked, keep count # of questions
         //loop until get a question not answered
 
@@ -120,10 +123,13 @@ $(document).ready(function () {
 
         //set up answers
         for (i = 0; i < maxAnswers; i++) {
+            console.log("setting up answers " + JSON.stringify(triviaQuestions[questionNum].answers[i]));
             console.log("setting up answers " + i);
             let j = i + 1;
-            $("#answersQ").append("<button>" + j + ".  " + triviaQuestions[questionNum].answers[i] + "</button>").append("<br><br>");
-            console.log("answers displayed " + showTimer);
+        //    $("#answersQ").append("<button>" + j + ".  " + triviaQuestions[questionNum].answers[i] + "</button>").append("<br><br>");
+      $("#answersQ").append("<p>" + JSON.stringify(triviaQuestions[questionNum].answers[i]) + "</p>").append("<br><br>");
+ 
+        console.log("answers displayed " + showTimer);
         }
         console.log("end of set up trivia game " + showTimer);
     }
@@ -131,17 +137,14 @@ $(document).ready(function () {
 
     function countDownTimer() {
         console.log("in countdown " + showTimer);
-        $("#timer").html("<p> Timer: " + showTimer + "</p>");
         showTimer--;
         if (showTimer === 0) {
             console.log("in timer = 0");
+            $("#timer").html("<p> Timer: " + showTimer + "</p>");
             youLose();
         }
-        //        return;
-        //    }
-        //    else {
-        //        $("#timer").html("<p> Timer: " + showTimer + "</p>");
-        //  }
+        $("#timer").html("<p> Timer: " + showTimer + "</p>");
+
     }
 
     // this function is run when the player loses the game
@@ -151,12 +154,10 @@ $(document).ready(function () {
         numIncorrect++;
         $("#winOrLose").append("Time is up - correct answer is " + triviaQuestions[questionNum].correctAnswer);
         $("#correctImg").append(triviaQuestions[questionNum].image);
-        triviaGame();
         clearInterval();
-        showTimer = 3;
+        showTimer = maxTimer;
         setInterval(countDownTimer, 1000);
-
-
+        triviaGame();
     }
 });
 //this function is displayed when game is over
