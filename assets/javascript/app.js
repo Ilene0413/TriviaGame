@@ -11,32 +11,32 @@ $(document).ready(function () {
     let questionCount = 0;
     let numCorrect = 0;
     let numIncorrect = 0;
-    let showTimer;
+    let showTimer = 3;
     let maxAnswers = 4;
     let triviaQuestions = [
         {
             question: "Question1",
             answers: ["answer1", "answer2", "answer3", "answer4"],
-            correctAnswer: "Correct Respond",
+            correctAnswer: "Correct Respond1",
             image: "image url"
 
         },
         {
             question: "Question2",
             answers: ["answer1", "answer2", "answer3", "answer4"],
-            correctAnswer: "Correct Respond",
+            correctAnswer: "Correct Respond2",
             image: "image url"
         },
         {
             question: "Question3",
             answers: ["answer1", "answer2", "answer3", "answer4"],
-            correctAnswer: "Correct Respond",
+            correctAnswer: "Correct Respond3",
             image: "image url"
         },
         {
             question: "Question4",
             answers: ["answer1", "answer2", "answer3", "answer4"],
-            correctAnswer: "Correct Respond",
+            correctAnswer: "Correct Respond4",
             image: "image url"
         }];
     let questAsked = [];
@@ -51,31 +51,53 @@ $(document).ready(function () {
         for (var i = 0; i < maxQuest; i++) {
             questAsked.push("n");
         }
-    //determine if game is over
+        //determine if game is over
+        console.log("question count = " + questionCount);
         if (questionCount === "maxQuest") {
             endGame();
             return;
         }
-    // put up trivia game question with answers and timer
-        triviaGame(questionNum);
-
-    // if timer gets to zero, player loses
-
-        if (showTimer === 0) {
-            youLose();
-            return;
+        else {
+            questionCount++;
         }
+        setInterval(countDownTimer, 1000);
+
+        // put up trivia game question with answers 
+
+
+        // if timer gets to zero, player loses
+    //    console.log("timer = " + showTimer);
+    //    if (showTimer === 0) {
+    //        console.log("in timer = 0");
+    //        youLose();
+    //        return;
+    //    }
+    //    else {
+    //        alert("timer not zero");
+//
+    //    }
+
+        //alert("timer keep going");
+        triviaGame();
 
         //player clicked on an answer
+        //     $("#answersQ").on("click", ".answer-button", function () {}
 
 
 
     });
     // this function puts up triva game board
 
-    function triviaGame(questionNum) {
+    function triviaGame() {
+
+        // clear variables
+        $("#timer, #triviaQ, #answersQ, #winOrLose, correctImg")
         //get random question, mark question asked, keep count # of questions
         //loop until get a question not answered
+
+        //show timer
+     $("#timer").html("<p> Timer: " + showTimer + "</p>");
+
         let qA = false;
         questionNum = Math.floor(Math.random() * maxQuest);
         while (!qA)
@@ -88,48 +110,57 @@ $(document).ready(function () {
         questionCount++;
 
         // timer set to 30 seconds and starts counting down
-        showTimer = 30;
-        setInterval(countDownTimer, 1000);
+        //  clearInterval();
+        //    showTimer = 3;
+        //   setInterval(countDownTimer, 1000);
 
         // set up trivia game board - timer and question
-        $("#timer").html("<p> Timer: " + showTimer + "</p>");
-        console.log(triviaQuestions[questionNum].question);
-        $("#triviaQ").html("<p>" + triviaQuestions[questionNum].question);
+        //  $("#timer").html("<p> Timer: " + showTimer + "</p>");
+        $("#triviaQ").append("<p>" + triviaQuestions[questionNum].question);
 
         //set up answers
-        for (i=0; i < maxAnswers; i++) {
+        for (i = 0; i < maxAnswers; i++) {
             console.log("setting up answers " + i);
-            let ansBtn = $("<p>");
-            ansBtn.addClass("answer-button answer");
-            ansBtn.attr("answer-value", triviaQuestions[questionNum].answers[i]);
-            ansBtn.attr("text", "</p>");
-            console.log("ansBTN = " + ansBtn);
-//    $("#answersQ").append($("<p>") + triviaQuestions[questionNum].answers[i] + "</p>");
-
-    $("#answersQ").append(ansBtn + triviaQuestions[questionNum].answers[i] + "</p>");
+            let j = i + 1;
+            $("#answersQ").append("<button>" + j + ".  " + triviaQuestions[questionNum].answers[i] + "</button>").append("<br><br>");
+            console.log("answers displayed " + showTimer);
         }
-    //    let ansButton
-    //    $("#answersQ").html(
-    //   "<p>" + triviaQuestions[questionNum].answers[0] + "</p>" +
-   //    "<p>" + triviaQuestions[questionNum].answers[1] + "</p>" +
-    //   "<p>" + triviaQuestions[questionNum].answers[2] + "</p>" +
-    //   "<p>" + triviaQuestions[questionNum].answers[3] + "</p>");
-
-
-
-        
-
+        console.log("end of set up trivia game " + showTimer);
     }
-// this function counts down the timer
+    // this function counts down the timer
 
     function countDownTimer() {
-        showTimer--;
+        console.log("in countdown " + showTimer);
         $("#timer").html("<p> Timer: " + showTimer + "</p>");
+        showTimer--;
+        if (showTimer === 0) {
+            console.log("in timer = 0");
+            youLose();
+        }
+        //        return;
+        //    }
+        //    else {
+        //        $("#timer").html("<p> Timer: " + showTimer + "</p>");
+        //  }
+    }
+
+    // this function is run when the player loses the game
+
+    function youLose() {
+        console.log("in you lose");
+        numIncorrect++;
+        $("#winOrLose").append("Time is up - correct answer is " + triviaQuestions[questionNum].correctAnswer);
+        $("#correctImg").append(triviaQuestions[questionNum].image);
+        triviaGame();
+        clearInterval();
+        showTimer = 3;
+        setInterval(countDownTimer, 1000);
+
+
     }
 });
-
 //this function is displayed when game is over
-function endGame() {
-
-
-}
+//function endGame() {
+//
+//
+//}
