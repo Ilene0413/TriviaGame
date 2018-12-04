@@ -45,6 +45,7 @@ $(document).ready(function () {
     let questAsked = [];
     let questionNum;
     let answerValue;
+    let correctTrivia;
 
 
 
@@ -104,10 +105,12 @@ $(document).ready(function () {
         for (i = 0; i < maxAnswers; i++) {
             let ansBtn = $("<button>");
             ansBtn.addClass("answer-button");
-            ansBtn.attr("text", triviaQuestions[questionNum].answers[i]);
+            ansBtn.text(triviaQuestions[questionNum].answers[i]);
             let j = i + 1;
             ansBtn.attr("data-answer", j);
-            $("#answersQ").append("<button>" + j + ".  " + triviaQuestions[questionNum].answers[i] + "</button>").append("<br><br>");
+      $("#answersQ").append(ansBtn).append("<br><br>");
+
+      //      $("#answersQ").append("<button>" + j + ".  " + triviaQuestions[questionNum].answers[i] + "</button>").append("<br><br>");
 
             console.log("answers displayed " + showTimer);
         }
@@ -115,13 +118,17 @@ $(document).ready(function () {
         $("#answersQ").on("click", ".answer-button", function () {
 
             answerValue = $(this).attr("data-answer");
+            console.log("answer Value after button clicked " +answerValue);
             correctTrivia = triviaQuestions[questionNum].correctAnswer;
-            if (answerValue == correctTriva) {
+            console.log("correctTrivia " + correctTrivia);
+            if (answerValue == correctTrivia) {
+                console.log("match");
                 ansMessage = "Congratulations - correct guess";
                 numCorrect++;
                 updateScreen(ansMessage);
             }
             else {
+                console.log("incorrect");
                 ansMessage = "Incorrect - Correct Answer is  ";
                 numIncorrect++;
                 updateScreen(ansMessage);
@@ -149,14 +156,18 @@ $(document).ready(function () {
     // this function runs when the player guesses or timer is up
 
     function updateScreen(ansMessage) {
-        console.log("update screen");
+        console.log("update screen  " + ansMessage);
+        ansMessage = ansMessage + triviaQuestions[questionNum].correctAnswer;
+        console.log(ansMessage);
         $("#winOrLose, #correctImg").empty();
-        $("#winOrLose").append(ansMessage + triviaQuestions[questionNum].correctAnswer);
+        $("#winOrLose").append(ansMessage);
+  
+     //   $("#winOrLose").append(ansMessage + triviaQuestions[questionNum].correctAnswer);
         $("#correctImg").append(triviaQuestions[questionNum].image);
         clearInterval(intervalId);
         //    showTimer = maxTimer;
         //    intervalId = setInterval(countDownTimer, 1000);
-        triviaGame();
+      //  triviaGame();
     }
 
     //this function is displayed when game is over
