@@ -47,7 +47,7 @@ $(document).ready(function () {
     let answerValue;
     let correctTrivia;
 
-//start when player starts game
+    //start when player starts game
 
 
     $("#start").click(function () {
@@ -56,7 +56,7 @@ $(document).ready(function () {
             questAsked.push("n");
         }
         // set up and play game
-
+        $("#button").empty();
         triviaGame();
 
     });
@@ -66,13 +66,17 @@ $(document).ready(function () {
 
         //determine if game is over
         console.log("question count = " + questionCount);
-        // if (questionCount > "maxQuest") {
-        //     endGame();
-        //     return;
-        //  }
+        if (questionCount === maxQuest) {
+            endGame();
+
+        }
 
         // clear variables
-      //  $("#triviaQ, #answersQ, #winOrLose, #correctImg").empty();
+        $("#triviaQ, #answersQ, #winOrLose, #correctImg").empty();
+
+
+        //get random question, mark question asked, keep count # of questions
+        //loop until get a question not answered
 
         //set up timer
 
@@ -82,20 +86,17 @@ $(document).ready(function () {
         clearInterval(intervalId);
         intervalId = setInterval(countDownTimer, 1000);
 
-        //get random question, mark question asked, keep count # of questions
-        //loop until get a question not answered
-
-
         questionNum = Math.floor(Math.random() * maxQuest);
         if (questAsked[questionNum] === "n") {
             questAsked[questionNum] = "y";
-            //    questionCount++;
+            questionCount++;
+            console.log("question asked " + questionNum);
+            console.log("question count " + questionCount);
+
         }
         else {
             triviaGame();
         }
-        console.log("question asked " + questionNum);
-        console.log("question count " + questionCount);
 
         $("#triviaQ").empty();
         $("#triviaQ").append("<p>" + triviaQuestions[questionNum].question);
@@ -112,13 +113,10 @@ $(document).ready(function () {
 
             $("#answersQ").append(j + ".  ").append(ansBtn).append("<br><br>");
 
-            //      $("#answersQ").append("<button>" + j + ".  " + triviaQuestions[questionNum].answers[i] + "</button>").append("<br><br>");
-
         }
-        console.log("end of set up trivia game " + showTimer);
         $("#answersQ").on("click", ".answer-button", function () {
 
-// determine which answer was selected & compare to correct answer
+            // determine which answer was selected & compare to correct answer
 
             answerValue = $(this).attr("data-answer");
             correctTrivia = triviaQuestions[questionNum].correctAnswer;
@@ -135,18 +133,19 @@ $(document).ready(function () {
                 updateScreen(ansMessage);
             }
             console.log("question count before checking " + questionCount);
-            questionCount++;
+            //    questionCount++;
             console.log("question count after update & before checking " + questionCount);
 
-            if (questionCount > maxQuest) {
-                console.log("in end game");
-            }
-            else {
-                console.log("game not over");
-                setTimeout(triviaGame, 5000);
-                //   triviaGame();
-                clearTimeout();
-            }
+            // if (questionCount > maxQuest) {
+            //     console.log("in end game");
+            //    endgame();
+            //    return;
+            // }
+            // else {
+            console.log("game not over");
+            setTimeout(triviaGame, 3000);
+            clearTimeout();
+            // }
 
         });
     }
@@ -154,31 +153,32 @@ $(document).ready(function () {
     // this function counts down the timer
 
     function countDownTimer() {
-        console.log("in countdown " + showTimer);
         showTimer--;
         $("#timer").html("<p> Timer: " + showTimer + "</p>");
 
         if (showTimer <= 0) {
             ansMessage = "Time is up - correct answer is  ";
             numIncorrect++;
+            //    questionCount++;
             $("#timer").html("<p> Timer: " + showTimer + "</p>");
             updateScreen(ansMessage);
             console.log("you lose");
+            setTimeout(triviaGame, 3000);
+            clearTimeout();
         }
     }
 
 
-    // this function runs when the player guesses or timer is up
+    // this function updates the screen after the player guesses or timer is up
 
     function updateScreen(ansMessage) {
-        console.log("update screen  " + ansMessage);
         ansMessage = ansMessage + triviaQuestions[questionNum].correctAnswer;
         console.log(ansMessage);
-    //display message
+        //display message
         $("#winOrLose, #correctImg").empty();
         $("#winOrLose").append(ansMessage);
 
-    //display picture
+        //display picture
 
         let ansPic = $("<img>");
         ansPic.addClass("ans-pic-image");
