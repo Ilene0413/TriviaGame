@@ -7,7 +7,7 @@ $(document).ready(function () {
     // object of questions with answers and correct picture
     // array to determine if question already answered
 
-    let maxTimer = 3;
+    let maxTimer = 30;
     let intervalId;
     let timeoutId;
     let maxQuest = 10;
@@ -110,7 +110,6 @@ $(document).ready(function () {
 
         answerValue = $(this).attr("data-answer");
         correctTrivia = triviaQuestions[questionNum].correctAnswer;
-        console.log("correct answer is " + correctTrivia);
         if (answerValue === correctTrivia) {
             ansMessage = "Congratulations - correct guess  ";
             numCorrect++;
@@ -122,7 +121,7 @@ $(document).ready(function () {
             updateScreen(ansMessage);
         }
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(setupTrivia, 3000);
+        timeoutId = setTimeout(setupTrivia, 5000);
 
     });
 
@@ -215,7 +214,7 @@ $(document).ready(function () {
             $("#timer").html("<h3> Timer: " + showTimer + "</h3>");
             updateScreen(ansMessage);
             clearTimeout(timeoutId);
-            timeoutId = setTimeout(setupTrivia, 3000);
+            timeoutId = setTimeout(setupTrivia, 5000);
 
         }
     }
