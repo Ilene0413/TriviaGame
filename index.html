@@ -16,28 +16,53 @@
 <body>
     <div>
         <h1 id="mainheader">Totally Dog Trivia!</h1>
-        <img id="headimg" src="assets/images/cammie.jpg" alt="mydog">
     </div>
     <br><br><br>
-    <div>
-        <button id="start">Start</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img id="headimg" src="assets/images/cammie.jpg" alt="mydog">
+            </div>
+            <div class="col-md-6">
+                <img id="headimg" src="assets/images/dogs.jpg" height="250px" alt="mydog">
+            </div>
+        </div>
+        <br><br><br>
+        <div class="row">
+            <div class="col-md-6">
+                <h2 align="center">Press button to start game --></h2>
+            </div>
+            <div class="col-md-6">
+                <button id="start" class="button-class"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="gameOver"></div>
+            </div>
+        </div>
+   <!--     <div class="row">
+            <div class="col-md-6">
+                <div id="gameOverPA"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="gameOverPB"></div>
+            </div> -->
     </div>
-   <!-- <div id="triviagame"> -->
-        <div id="timer"></div>
-        <div id="triviaQ"></div>
-        <div id="winOrLose"></div>
-        <div id="answersQ"></div>
-        <div id="correctImg"></div>
-   <!-- </div> -->
-    <div id="gameOver"></div>
+    <div id="timer"></div>
+                <div id="triviaQ"></div>
+                <div id="winOrLose"></div>
+                <div id="answersQ"></div>
+                <div id="correctImg"></div>
+        <!--        <div id="gameOver"></div>-->
 
 
 
-    <!-- play game -->
+                <!-- play game -->
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="assets/javascript/app.js"> </script>
-    <!--<script=type="text/javascript">-->
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <script src="assets/javascript/app.js"> </script>
+                <!--<script=type="text/javascript">-->
 </body>
 
 </html>

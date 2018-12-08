@@ -10,7 +10,7 @@ $(document).ready(function () {
     let maxTimer = 3;
     let intervalId;
     let timeoutId;
-    let maxQuest = 2;
+    let maxQuest = 10;
     let questionCount = 0;
     let numCorrect = 0;
     let numIncorrect = 0;
@@ -21,26 +21,62 @@ $(document).ready(function () {
     let triviaQuestions = [
         {
             question: "Which breed of dog yodels instead of barks?",
-            answers: ["Austrailan Cattle Dog", "Basenji", "Bloodhound", "Cocker Spaniel"],
+            answers: ["1. Austrailan Cattle Dog", "2. Basenji", "3. Bloodhound", "4. Cocker Spaniel"],
             correctAnswer: "2",
             image: "assets/images/Basenji.jpg"
 
         },
         {
+            question: "Which breed has the longest ears?",
+            answers: ["1. Basset Hound", "2. Afghan Hound", "3. American Water Spaniel", "4. American Leopard Hound"],
+            correctAnswer: "1",
+            image: "assets/images/basset-hound.jpg"
+        },
+        {
             question: "Which is the smallest breed?",
-            answers: ["Yorkshire Terrier", "Dachshund", "Chihuahua", "Cairn Terrier"],
+            answers: ["1. Yorkshire Terrier", "2. Dachshund", "3. Chihuahua", "4. Cairn Terrier"],
             correctAnswer: "3",
             image: "assets/images/chihuahua.jpg"
         },
         {
-            question: "Which breed has a black tongue?",
-            answers: ["Chow Chow", "Beagle", "Pekinese", "Great Dane"],
+            question: "Which breed has a blue black tongue?",
+            answers: ["1. Chow Chow", "2. Beagle", "3. Pekinese", "4. Great Dane"],
             correctAnswer: "1",
             image: "assets/images/chow chow.jpg"
         },
         {
+            question: "Dogs can be uniquely identified by:",
+            answers: ["1. Tongue Print", "2. Paw Print", "3. Eyes", "4. Nose Print"],
+            correctAnswer: "4",
+            image: "assets/images/nose-print.jpg"
+        },
+        {
+            question: "Which is the tallest dog breed?",
+            answers: ["1. Great Dane", "2. St. Bernard", "3. Irish Wolfhound", "4. English Matiff"],
+            correctAnswer: "3",
+            image: "assets/images/irish-wolfhound.jpg"
+        },
+        {
+            question: "Most dogs hate which of the following:",
+            answers: ["1. Ear Rubs", "2. Hugs", "3. Belly Rub", "4. Toys"],
+            correctAnswer: "2",
+            image: "assets/images/hugging-dogs.jpg"
+        },
+        {
+            question: "What is the most popular dog breed in the United States?",
+            answers: ["1. Labrador Retriever", "2. German Shepherd", "3. Golden Retriever", "4. French Bulldog"],
+            correctAnswer: "1",
+            image: "assets/images/labradors.jpg"
+        },
+        {
+            question: "How many teeth does an adult dog have?",
+            answers: ["1. 32", "2. 36", "3. 40", "4. 42"],
+            correctAnswer: "4",
+            image: "assets/images/dog-teeth.jpg"
+        },
+        {
             question: "Which breed is the cleverest?",
-            answers: ["Catahoula", "Border Collie", "Labrador", "St. Bernard"],
+            answers: ["1. Catahoula", "2. Border Collie", "3. Labrador", "4. St. Bernard"],
             correctAnswer: "2",
             image: "assets/images/Border Collie.jpg"
         }];
@@ -57,10 +93,12 @@ $(document).ready(function () {
         //hide start button
         initQuestAsked();
         $("button").hide();
+        $("h2").hide();
 
         // set up and play 
 
         setupTrivia();
+        correctTrivia = triviaQuestions[questionNum].correctAnswer;
 
     });
 
@@ -72,8 +110,9 @@ $(document).ready(function () {
 
         answerValue = $(this).attr("data-answer");
         correctTrivia = triviaQuestions[questionNum].correctAnswer;
-        if (answerValue == correctTrivia) {
-            ansMessage = "Congratulations - correct guess";
+        console.log("correct answer is " + correctTrivia);
+        if (answerValue === correctTrivia) {
+            ansMessage = "Congratulations - correct guess  ";
             numCorrect++;
             updateScreen(ansMessage);
         }
@@ -96,11 +135,7 @@ $(document).ready(function () {
         numCorrect = 0;
         numIncorrect = 0;
         //clear screen for new game
-        //     $("#gameOver").hide();
         $("#gameOver").empty();
-        //    $("#triviaGame").empty();
-        //   $("#triviaGame").show();
-        //
         //   set up and play game again
         setupTrivia();
     });
@@ -111,10 +146,9 @@ $(document).ready(function () {
 
         //determine if game is over
         if (questionCount < maxQuest) {
-// game not over
-// clear trivia game board
+            // game not over
+            // clear trivia game board
             $("#triviaQ, #answersQ, #winOrLose, #correctImg").empty();
-            //        $("#triviaGame").empty();
 
 
             //get random question, mark question asked, keep count # of questions
@@ -124,7 +158,7 @@ $(document).ready(function () {
 
             showTimer = maxTimer;
             $("#timer").empty();
-            $("#timer").append("<p> Timer: " + showTimer + "</p>");
+            $("#timer").append("<h3> Timer: " + showTimer + "</h3>");
             clearInterval(intervalId);
             intervalId = setInterval(countDownTimer, 1000);
 
@@ -138,7 +172,7 @@ $(document).ready(function () {
             }
 
             $("#triviaQ").empty();
-            $("#triviaQ").append("<p>" + triviaQuestions[questionNum].question);
+            $("#triviaQ").append("<h1 align='center'>" + triviaQuestions[questionNum].question).append("<br>");
 
             //set up answers
             //clear out old answers
@@ -149,8 +183,7 @@ $(document).ready(function () {
                 ansBtn.text(triviaQuestions[questionNum].answers[i]);
                 let j = i + 1;
                 ansBtn.attr("data-answer", j);
-
-                $("#answersQ").append(j + ".  ").append(ansBtn).append("<br><br>");
+                $("#answersQ").append(ansBtn).append("<br><br>");
 
             }
 
@@ -172,15 +205,17 @@ $(document).ready(function () {
 
     function countDownTimer() {
         showTimer--;
-        $("#timer").html("<p> Timer: " + showTimer + "</p>");
+        $("#timer").html("<h3> Timer: " + showTimer + "</h3>");
 
         if (showTimer <= 0) {
+            correctTrivia = triviaQuestions[questionNum].correctAnswer;
+
             ansMessage = "Time is up - correct answer is  ";
             numIncorrect++;
-            $("#timer").html("<p> Timer: " + showTimer + "</p>");
+            $("#timer").html("<h3> Timer: " + showTimer + "</h3>");
             updateScreen(ansMessage);
             clearTimeout(timeoutId);
-            timeoutId = setTimeout(setupTrivia, 1000);
+            timeoutId = setTimeout(setupTrivia, 3000);
 
         }
     }
@@ -189,7 +224,13 @@ $(document).ready(function () {
     // this function updates the screen after the player guesses or timer is up
 
     function updateScreen(ansMessage) {
-        ansMessage = ansMessage + triviaQuestions[questionNum].correctAnswer;
+
+        //clear answers
+        $("#answersQ").empty();
+        let ans = parseInt(correctTrivia)-1;
+        console.log("correct triva " + ans);
+        ansMessage = ansMessage + triviaQuestions[questionNum].answers[ans];
+      
         //display message
         $("#winOrLose, #correctImg").empty();
         $("#winOrLose").append(ansMessage);
@@ -207,25 +248,25 @@ $(document).ready(function () {
 
     //this function is displayed when game is over
     function endGame() {
-  //      $("#timer", "triviaQ", "#winOrLose", "#answersQ", "#correctImg").empty();
         $("#timer").empty();
         $("#triviaQ").empty();
         $("#winOrLose").empty();
         $("#answersQ").empty();
         $("#correctImg").empty();
-
-
-
         $("#gameOver").empty();
-        let playAgainBtn = $("<button>");
+
+        let playAgainBtn = $("<img class='gameOverBtn'>");
         playAgainBtn.addClass("playagain-button");
-        playAgainBtn.text("Play Again");
-        $("#gameOver").html("Game Over");
-        $("#gameOver").append("<br><br>");
-        $("#gameOver").append("Correct Guesses:  " + numCorrect);
-        $("#gameOver").append("<br><br>");
-        $("#gameOver").append("Incorrect Guesses:  " + numIncorrect);
-        $("#gameOver").append("<br><br>").append(playAgainBtn);
+        playAgainBtn.attr("src", "assets/images/dog-pawprint-button.png");
+        $(".playagain-button").css("width", 250);
+        $("#gameOver").append("<h2 class='gameOver' align='center'> Game Over");
+        $("#gameOver").append("<br>");
+        $("#gameOver").append("<p class='gameOverP' align='center'> Correct Guesses:  " + numCorrect);
+        $("#gameOver").append("<br>");
+        $("#gameOver").append("<p class='gameOverP' align='center'> Incorrect Guesses:  " + numIncorrect);
+        $("#gameOver").append("<br>");
+        $("#gameOver").append("<h2 class='gameOverB'> Press Button to Play Again   ");
+        $("#gameOver").append(playAgainBtn);
 
 
     }
